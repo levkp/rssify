@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from pytz import timezone
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('config.ini.example')
 
 for section in config.sections():
     s = dict(config.items(section))
