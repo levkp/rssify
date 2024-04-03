@@ -1,3 +1,4 @@
+import os
 import configparser
 from datetime import datetime
 import requests
@@ -32,7 +33,7 @@ for section in config.sections():
         fe = fg.add_entry()
         fe.title(titles[i].text)
         fe.link(href=urls[i].get('href'), rel='alternate')
-        if dates is not None:
+        if dates is not None and len(dates) > 0:
             date = datetime.strptime(dates[i].text.strip(), s['item_date_format'])
             if config.has_option(section, 'item_timezone'):
                 localtz = timezone(s['item_timezone'])        
@@ -43,4 +44,8 @@ for section in config.sections():
 
         fe.published(date)
 
-    fg.rss_file(section.replace(' ', '_') + '.xml')
+    feeds_dir = 'feeds'
+
+    if not os.path.exists(feeds_dir):
+        os.makedirs(feeds_dir)
+    fg.rss_file(os.path.join(feeds_dir, section.replace(' ', '_') + '.xml'))
